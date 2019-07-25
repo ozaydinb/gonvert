@@ -22,6 +22,10 @@ func ConvertStruct(val interface{}) StructConverter {
 }
 
 func (c *StructConverterImp) ToJson() (string, error) {
+	isStruct := structs.IsStruct(c.val)
+	if !isStruct {
+		return "", errors.New("only structs can be converted")
+	}
 	result, err := json.Marshal(c.val)
 	if err != nil {
 		return "", err
@@ -33,7 +37,7 @@ func (c *StructConverterImp) ToJson() (string, error) {
 func (c *StructConverterImp) ToMap() (map[string]interface{}, error) {
 	isStruct := structs.IsStruct(c.val)
 	if !isStruct {
-		return nil, errors.New("only structs can convert to map")
+		return nil, errors.New("only structs can be converted")
 	}
 	m := structs.Map(c.val)
 	return m, nil
