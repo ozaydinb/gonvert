@@ -1,9 +1,14 @@
 package gonvert
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"errors"
+	"github.com/fatih/structs"
+)
 
 type StructConverter interface {
 	ToJson() (string, error)
+	ToMap() (map[string]interface{}, error)
 }
 
 type StructConverterImp struct {
@@ -23,4 +28,13 @@ func (c *StructConverterImp) ToJson() (string, error) {
 	}
 	jsonResult := string(result)
 	return jsonResult, nil
+}
+
+func (c *StructConverterImp) ToMap() (map[string]interface{}, error) {
+	isStruct := structs.IsStruct(c.val)
+	if !isStruct {
+		return nil, errors.New("only structs can convert to map")
+	}
+	m := structs.Map(c.val)
+	return m, nil
 }
