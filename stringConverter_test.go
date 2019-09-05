@@ -60,8 +60,7 @@ func TestConvertString_ToInt32ReturnError(t *testing.T) {
 
 func TestConvertString_ToModelCanConvertValidJsonValue(t *testing.T) {
 	m := &model{}
-	success, err := ConvertString("{\"name\":\"Barış\", \"age\":1}").ToModel(m)
-	assert.True(t, success)
+	err := ConvertString("{\"name\":\"Barış\", \"age\":1}").ToStruct(m)
 	assert.NoError(t, err)
 	assert.Equal(t, m.Name, "Barış")
 	assert.Equal(t, m.Age, 1)
@@ -69,8 +68,7 @@ func TestConvertString_ToModelCanConvertValidJsonValue(t *testing.T) {
 
 func TestConvertString_ToModelReturnError(t *testing.T) {
 	m := &model{}
-	success, err := ConvertString("it is not a json").ToModel(m)
-	assert.False(t, success)
+	err := ConvertString("it is not a json").ToStruct(m)
 	assert.Error(t, err)
 	assert.Equal(t, m.Name, "")
 	assert.Equal(t, m.Age, 0)

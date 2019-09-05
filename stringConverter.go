@@ -14,9 +14,9 @@ func ConvertString(val string) StringConverter {
 
 //StringConverter used for converting string to any convertible type
 type StringConverter interface {
-	ToInt32(defaultValue ...int32) (int32, error)
 	ToInt(defaultValue ...int) (int, error)
-	ToModel(valType interface{}) (bool, error)
+	ToInt32(defaultValue ...int32) (int32, error)
+	ToStruct(valType interface{}) error
 }
 
 type stringConverterImp struct {
@@ -42,10 +42,7 @@ func (c *stringConverterImp) ToInt(defaultValue ...int) (int, error) {
 	return result, err
 }
 
-func (c *stringConverterImp) ToModel(valType interface{}) (bool, error) {
+func (c *stringConverterImp) ToStruct(valType interface{}) error {
 	err := json.Unmarshal([]byte(c.val), valType)
-	if err != nil {
-		return false, err
-	}
-	return true, nil
+	return err
 }
